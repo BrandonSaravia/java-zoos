@@ -25,14 +25,15 @@ public class Zoo {
     @JsonIgnoreProperties("zoo")
     private List<Telephone> telephones = new ArrayList<>();
 
+
+
     public Zoo() {
     }
 
-    public Zoo(String zooname) {
+    public Zoo(String zooname, User user) {
         this.zooname = zooname;
+
     }
-
-
 
     public long getZooid() {
         return zooid;
@@ -65,4 +66,6 @@ public class Zoo {
     public void setTelephones(List<Telephone> telephones) {
         this.telephones = telephones;
     }
+
+
 }

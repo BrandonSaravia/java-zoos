@@ -1,6 +1,7 @@
 package com.zoo.animals.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import net.bytebuddy.build.Plugin;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
@@ -21,7 +22,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
 
@@ -29,10 +30,10 @@ public class User {
     }
 
     public User(String username, String password, List<UserRoles> userRoles) {
-        this.username = username;
-        this.password = password;
-
-        for (UserRoles ur : userRoles) {
+        setUsername(username);
+        setPassword(password);
+        for (UserRoles ur : userRoles)
+        {
             ur.setUser(this);
         }
         this.userRoles = userRoles;
@@ -71,14 +72,16 @@ public class User {
         this.userRoles = userRoles;
     }
 
-    public List<SimpleGrantedAuthority> getAuthority() {
-        List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
 
-        for (UserRoles r : this.userRoles) {
-            String myRole = "ROLE_" + r.getRole().getRoleName().toUpperCase();
-            rtnList.add(new SimpleGrantedAuthority(myRole));
+
+    public List<SimpleGrantedAuthority> getAuthority() {
+        List<SimpleGrantedAuthority> list = new ArrayList<>();
+        for (UserRoles r : this.userRoles)
+        {
+            String myRole = "ROLE_" + r.getRole().getName().toUpperCase();
+            list.add(new SimpleGrantedAuthority(myRole));
         }
-        return rtnList;
+        return list;
     }
 }
 

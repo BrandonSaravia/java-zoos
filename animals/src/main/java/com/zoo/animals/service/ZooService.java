@@ -3,6 +3,7 @@ package com.zoo.animals.service;
 import com.zoo.animals.model.Zoo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ZooService {
     ArrayList<Zoo> findAll();

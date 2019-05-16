@@ -1,5 +1,6 @@
+package com.zoo.animals.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.zoo.animals.model.UserRoles;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Role extends Auditable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("role")
     private List<UserRoles> userRoles = new ArrayList<>();
 
@@ -29,33 +30,27 @@ public class Role extends Auditable {
         this.name = name;
     }
 
-    public long getRoleid()
-    {
+    public long getRoleid() {
         return roleid;
     }
 
-    public void setRoleid(long roleid)
-    {
+    public void setRoleid(long roleid) {
         this.roleid = roleid;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public List<UserRoles> getUserRoles()
-    {
+    public List<UserRoles> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(List<UserRoles> userRoles)
-    {
+    public void setUserRoles(List<UserRoles> userRoles) {
         this.userRoles = userRoles;
     }
 }

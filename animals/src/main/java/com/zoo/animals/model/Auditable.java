@@ -16,7 +16,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-abstract class Auditable {
+public abstract class Auditable {
 
     @CreatedBy
     protected String createdBy;

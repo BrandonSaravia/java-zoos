@@ -2,7 +2,7 @@ package com.zoo.animals.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.management.relation.Role;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,15 +11,15 @@ import java.util.Objects;
 @Table(name = "userroles")
 public class UserRoles extends Auditable implements Serializable {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"userRoles", "hibernateLazyInitializer"})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userid")
+    @JsonIgnoreProperties({"userRoles", "hibernateLazyInitializer"})
     private User user;
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"userRoles", "hibernateLazyInitializer"})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleid")
+    @JsonIgnoreProperties({"userRoles", "hibernateLazyInitializer"})
     private Role role;
 
     public UserRoles() {
@@ -48,18 +48,16 @@ public class UserRoles extends Auditable implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
+        if (this == o)
             return true;
-        }
-        if (!(o instanceof UserRoles)) {
+        if (!(o instanceof UserRoles))
             return false;
-        }
         UserRoles userRoles = (UserRoles) o;
-        return user.equals(userRoles.user) && role.equals(userRoles.role);
+        return getUser().equals(userRoles.getUser()) && getRole().equals(userRoles.getRole());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, role);
+        return Objects.hash(getUser(), getRole());
     }
 }
